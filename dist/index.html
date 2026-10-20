@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="PocketGS: high-fidelity on-device training for 3D Gaussian Splatting." />
+    <title>PocketGS - On-device 3D Gaussian Splatting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+    <style>
+      :root { --ink:#101113; --muted:#686b71; --rule:#deded9; --paper:#f8f8f5; --lime:#d9fa4b; --blue:#e5efff; --orange:#ff8a4c; --pad:clamp(20px,5vw,78px); }
+      * { box-sizing:border-box } html { scroll-behavior:smooth } body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,Arial,sans-serif; } a { color:inherit; text-decoration:none }
+      .mast { display:flex; justify-content:space-between; align-items:center; padding:22px var(--pad); border-bottom:1px solid var(--rule); font-size:13px; letter-spacing:.05em; text-transform:uppercase; }
+      .mark { font-weight:800; letter-spacing:-.04em; text-transform:none; font-size:22px }.dot { color:var(--orange) }
+      .mast nav { display:flex; gap:24px; color:var(--muted) }.mast nav a:hover { color:var(--ink) }
+      .hero { padding:clamp(56px,10vw,130px) var(--pad) 40px; display:grid; grid-template-columns:1.35fr .65fr; gap:48px; min-height:540px; }
+      .eyebrow,.kicker { font:500 12px "DM Mono",monospace; letter-spacing:.04em; text-transform:uppercase; }.eyebrow { color:#5d7610; background:var(--lime); width:max-content; padding:6px 10px; border-radius:100px; }
+      h1 { font-size:clamp(53px,8.3vw,126px); line-height:.88; letter-spacing:-.077em; margin:28px 0 28px; max-width:1000px; font-weight:800; } h1 em { font-family:"Playfair Display",Georgia,serif; font-weight:600; letter-spacing:-.075em; }
+      .lede { font-size:clamp(18px,2vw,24px); line-height:1.5; max-width:780px; margin:0; color:#37393d; }
+      .meta { align-self:end; border-left:1px solid var(--ink); padding-left:18px; display:grid; gap:25px; } .meta p { margin:5px 0 0; font-size:13px; line-height:1.5; color:var(--muted) }.meta strong { font-size:14px; }
+      .actions { display:flex; flex-wrap:wrap; gap:11px; margin-top:37px }.button { display:inline-flex; align-items:center; gap:10px; border:1px solid var(--ink); padding:12px 16px; border-radius:4px; font-size:14px; font-weight:700; transition:.2s ease; }.button.primary { background:var(--ink); color:white }.button:hover { transform:translateY(-2px); box-shadow:4px 4px 0 var(--lime) }
+      .stage { padding:0 var(--pad) 88px; }.video-wrap { position:relative; overflow:hidden; background:#111; border:1px solid var(--ink); border-radius:4px; box-shadow:10px 11px 0 var(--blue); }.video-wrap img { display:block; width:100%; aspect-ratio:16/8.2; object-fit:cover; }.stage-label { position:absolute; z-index:2; left:16px; top:16px; color:#111; background:var(--lime); padding:7px 10px; border-radius:100px; }
+      section { padding:88px var(--pad); border-top:1px solid var(--rule); }.section-head { display:grid; grid-template-columns:240px 1fr; gap:32px; margin-bottom:48px; }.section-head h2 { margin:0; font-size:clamp(33px,4vw,58px); letter-spacing:-.06em; line-height:.98 }.section-head p { margin:5px 0 0; max-width:700px; font-size:18px; line-height:1.65; color:#45474c }
+      .problems { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); }.problem { background:var(--paper); padding:28px; min-height:260px }.num { font:14px "DM Mono",monospace; color:#66820d }.problem h3 { font-size:24px; line-height:1.05; letter-spacing:-.045em; margin:58px 0 12px }.problem p { line-height:1.6; margin:0; color:var(--muted); font-size:14px }
+      .pipeline { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--ink); }.step { padding:30px; min-height:290px; position:relative; border-right:1px solid var(--ink) }.step:last-child { border:0 }.step::after { content:'→'; position:absolute; right:-11px; top:23px; background:var(--paper); padding:2px; font-size:20px; z-index:1 }.step:last-child::after { display:none }.step-icon { width:43px; height:43px; border-radius:50%; background:var(--lime); display:grid; place-items:center; font:14px "DM Mono",monospace }.step h3 { margin:70px 0 12px; font-size:25px; letter-spacing:-.045em }.step p { color:var(--muted); line-height:1.6; font-size:14px; margin:0 }
+      .result { background:var(--ink); color:#f7f7f4; }.result .section-head p { color:#c9c9c4 }.result .kicker { color:var(--lime) }.metrics { display:grid; grid-template-columns:1fr 1fr 1fr; border-top:1px solid #4c4d4e; border-left:1px solid #4c4d4e }.metric { padding:26px; border-right:1px solid #4c4d4e; border-bottom:1px solid #4c4d4e }.metric .value { font-size:clamp(35px,5vw,73px); font-weight:800; line-height:1; letter-spacing:-.07em; color:var(--lime) }.metric p { color:#b7b8b4; font-size:13px; line-height:1.55; margin:12px 0 0 }.metric strong { color:#fff }
+      .citation { display:grid; grid-template-columns:240px 1fr; gap:32px; }.citation h2 { margin:0; font-size:31px; letter-spacing:-.055em }.citation pre { white-space:pre-wrap; margin:0; font:13px/1.7 "DM Mono",monospace; border:1px solid var(--rule); padding:22px; color:#44464a; background:#fff; overflow:auto }.foot { padding:30px var(--pad); display:flex; justify-content:space-between; color:var(--muted); font:12px "DM Mono",monospace; border-top:1px solid var(--rule) }
+      @media(max-width:760px){ .mast nav { display:none }.hero,.section-head,.citation { grid-template-columns:1fr; gap:24px }.hero { min-height:0 }.meta { border-left:0; border-top:1px solid var(--ink); padding:18px 0 0; grid-template-columns:1fr 1fr }.problems,.pipeline,.metrics { grid-template-columns:1fr }.step { border-right:0; border-bottom:1px solid var(--ink); min-height:220px }.step::after { right:auto; left:20px; bottom:-13px; top:auto }.metric { border-right:0 }.section-head p { margin:0 } }
+    </style>
+  </head>
+  <body>
+    <header class="mast"><a class="mark" href="#top">PocketGS<span class="dot">.</span></a><nav><a href="#method">Method</a><a href="#results">Results</a><a href="#demo">Demo</a></nav><span>Research Project / AAAI 2027 submission</span></header>
+    <main id="top">
+      <section class="hero">
+        <div>
+          <span class="eyebrow">On-device 3D scene modeling</span>
+          <h1>High fidelity.<br /><em>In your pocket.</em></h1>
+          <p class="lede">PocketGS makes end-to-end 3D Gaussian Splatting training practical on a commodity smartphone - from handheld capture to a high-quality, real-time 3D scene.</p>
+          <div class="actions"><a class="button primary" href="#demo">Watch demo <span>↓</span></a><a class="button" href="pocketgs-paper.pdf" target="_blank" rel="noreferrer">Read paper <span>↗</span></a></div>
+        </div>
+        <aside class="meta"><div><span class="kicker">Authors</span><p><strong>Anonymous Submission</strong></p></div><div><span class="kicker">Focus</span><p>3D Gaussian Splatting<br />Mobile graphics · On-device ML</p></div><div><span class="kicker">Paper</span><p>AAAI 2027 submission<br />with mobile deployment results</p></div></aside>
+      </section>
+      <div class="stage" id="demo"><div class="video-wrap"><span class="stage-label kicker">Live mobile reconstruction</span><img src="teaser.jpg" alt="PocketGS capture, on-device training, and mobile rendering workflow" /></div></div>
+      <section><div class="section-head"><span class="kicker">The challenge / 01</span><div><h2>Training 3DGS was built for workstations.</h2><p>Mobile capture-to-render workflows need to contend with tightly coupled limits on memory, time, thermal budget, and numerical stability - without surrendering reconstruction quality.</p></div></div><div class="problems"><article class="problem"><span class="num">01 / MEMORY</span><h3>Peak memory</h3><p>Standard training workflows assume generous workstation memory, creating a hard fit problem for phones.</p></article><article class="problem"><span class="num">02 / TIME</span><h3>Runtime budget</h3><p>A usable on-device experience needs reconstruction in minutes, not the long optimization windows common in offline pipelines.</p></article><article class="problem"><span class="num">03 / QUALITY</span><h3>Visual fidelity</h3><p>Mobile optimizations must preserve crisp geometry and high perceptual quality in the rendered scene.</p></article></div></section>
+      <section id="method"><div class="section-head"><span class="kicker">The approach / 02</span><div><h2>Co-design for the phone.</h2><p>PocketGS reshapes the 3DGS training pipeline around three coordinated operators, turning resource constraints into first-class design inputs.</p></div></div><div class="pipeline"><article class="step"><div class="step-icon">A</div><h3>Geometry-aware priors</h3><p>Build local surface statistics to seed anisotropic Gaussians, reducing early conditioning gaps.</p></article><article class="step"><div class="step-icon">B</div><h3>Stable alpha composition</h3><p>Unroll alpha compositing with cached intermediates to support a stable mobile backward pass.</p></article><article class="step"><div class="step-icon">C</div><h3>Index-mapped gradients</h3><p>Map gradients efficiently for memory-conscious optimization on the device.</p></article></div></section>
+      <section class="result" id="results"><div class="section-head"><span class="kicker">Reported result / 03</span><div><h2>Four minutes to a scene you can explore.</h2><p>PocketGS is presented as a fully on-device capture-to-render workflow, with quality and device resources measured under a controlled 500-step horizon.</p></div></div><div class="metrics"><div class="metric"><div class="value">23.67</div><p><strong>MobileScan PSNR</strong><br />Highest reported MobileScan PSNR at the controlled 500-step horizon.</p></div><div class="metric"><div class="value">255.2s</div><p><strong>Post-capture time</strong><br />Average MobileScan processing time on an iPhone 15.</p></div><div class="metric"><div class="value">52.32</div><p><strong>FPS</strong><br />Reported smartphone rendering throughput after fully on-device training.</p></div></div></section>
+      <section><div class="citation"><h2>How to cite</h2><pre>@article{guo2026pocketgs,
+  title   = {PocketGS: High-Fidelity On-Device Training for 3D Gaussian Splatting},
+  author  = {Anonymous Submission},
+  year    = {2027}
+}</pre></div></section>
+    </main>
+    <footer class="foot"><span>POCKETGS / RESEARCH SHOWCASE</span><span>© 2026</span></footer>
+  </body>
+</html>
