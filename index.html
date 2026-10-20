@@ -1,12 +1,44 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0; url=dist/">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="PocketGS: High-Fidelity On-Device Training for 3D Gaussian Splatting." />
     <title>PocketGS</title>
+    <style>
+      :root { --blue:#1f5fa7; --text:#171717; --muted:#5e6268; --line:#d9dde2; --paper:#fff; }
+      * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; color:var(--text); background:var(--paper); font-family:Arial, Helvetica, sans-serif; font-size:16px; line-height:1.58; }
+      a { color:var(--blue); text-decoration:none; } a:hover { text-decoration:underline; }
+      .wrap { width:min(1060px, calc(100% - 40px)); margin:auto; } nav { height:62px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; font-size:14px; } nav strong { letter-spacing:-.02em; } nav div { display:flex; gap:22px; }
+      header { text-align:center; padding:68px 0 38px; } h1 { font-size:clamp(36px,5vw,58px); line-height:1.1; letter-spacing:-.04em; margin:0 auto 15px; font-weight:700; max-width:900px; } .authors { margin:0; font-size:18px; } .venue { color:var(--muted); margin:4px 0 22px; font-size:15px; } .links { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; } .links a { border:1px solid var(--line); border-radius:4px; color:var(--text); padding:7px 13px; font-size:14px; } .links a:hover { background:#f5f7fa; text-decoration:none; }
+      .teaser, .media { margin:0 auto 45px; border:1px solid var(--line); } .teaser img, .media img, .media video { width:100%; display:block; } .caption { color:var(--muted); font-size:13px; margin:9px 0 0; }
+      section { border-top:1px solid var(--line); padding:38px 0; } h2 { font-size:25px; margin:0 0 17px; letter-spacing:-.02em; } p { margin:0 0 14px; } .abstract { max-width:910px; margin:auto; text-align:left; } .abstract p { font-size:17px; }
+      .method { display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--line); } .method article { padding:22px; border-right:1px solid var(--line); } .method article:last-child { border:0; } .method h3 { font-size:16px; margin:0 0 8px; } .method p { color:var(--muted); font-size:14px; margin:0; }
+      pre { white-space:pre-wrap; border:1px solid var(--line); padding:16px; margin:0; overflow:auto; background:#fafafa; color:#35383d; font:12px/1.6 Menlo, Consolas, monospace; } footer { border-top:1px solid var(--line); color:var(--muted); font-size:13px; padding:22px 0 35px; }
+      @media (max-width:700px) { .method { grid-template-columns:1fr; } .method article { border-right:0; border-bottom:1px solid var(--line); } .method article:last-child { border-bottom:0; } nav div { gap:12px; } th,td { padding:8px 5px; font-size:12px; } }
+    </style>
   </head>
   <body>
-    <p>Opening <a href="dist/">PocketGS project page</a>…</p>
+    <div class="wrap">
+      <nav><strong>PocketGS</strong><div><a href="#abstract">Abstract</a><a href="#method">Method</a><a href="#demo">Video</a><a href="#results">Qualitative Results</a></div></nav>
+      <header>
+        <h1>PocketGS: High-Fidelity On-Device Training for 3D Gaussian Splatting</h1>
+        <p class="authors">Wenzhi Guo, Guangchi Fang, Shu Yang, Bing Wang<sup>*</sup></p>
+        <div class="links"><a href="https://arxiv.org/abs/2601.17354" target="_blank" rel="noreferrer">Paper (arXiv)</a><a href="#demo">Video</a></div>
+      </header>
+      <figure class="teaser"><img src="teaser.jpg" alt="PocketGS workflow from smartphone capture through on-device training to mobile rendering" /><figcaption class="caption">PocketGS performs smartphone capture, training, and rendering entirely on device.</figcaption></figure>
+      <main>
+        <section id="abstract" class="abstract"><h2>Abstract</h2><p>3D Gaussian Splatting offers real-time rendering, but its training commonly relies on offline geometry, long-horizon optimization, and memory-intensive differentiation. PocketGS formulates post-capture static-scene training as resource-constrained finite-horizon optimization, and completes geometry construction, Gaussian initialization, and 3DGS optimization on a commodity smartphone. The approach combines a geometry-informed warm start with reference-consistent mobile gradient execution.</p></section>
+        <section id="method"><h2>Method</h2><div class="method"><article><h3>Geometry construction</h3><p>Refine mobile poses and construct a filtered dense prior from handheld captures under a mobile resource budget.</p></article><article><h3>Gaussian initialization</h3><p>Initialize surface-aligned anisotropic Gaussians from local geometry so the model starts with useful spatial support.</p></article><article><h3>Differentiable splatting</h3><p>Replay compositing interactions and scatter gradients to canonical parameters without CPU intervention.</p></article></div></section>
+        <section id="demo"><h2>Video</h2><figure class="media"><video controls playsinline preload="metadata" poster="teaser.jpg"><source src="pocketgs-demo.mp4" type="video/mp4" />Your browser does not support HTML5 video.</video><figcaption class="caption">End-to-end mobile capture, on-device training, and novel-view rendering with PocketGS.</figcaption></figure></section>
+        <section id="results"><h2>Qualitative Results</h2><p>On challenging mobile scenes, PocketGS preserves texture and thin structures while reconstructing regions that are difficult for generic MVS initialization, including low-texture and specular areas.</p><figure class="media"><img src="qualitative-results.jpg" alt="Qualitative comparison of PocketGS and baselines on MobileScan scenes" /><figcaption class="caption">Qualitative reconstruction after 500 optimization steps on MobileScan.</figcaption></figure></section>
+        <section><h2>Citation</h2><pre>@article{pocketgs2027,
+  title  = {PocketGS: High-Fidelity On-Device Training for 3D Gaussian Splatting},
+  author = {Guo, Wenzhi and Fang, Guangchi and Yang, Shu and Wang, Bing},
+  year   = {2026}
+}</pre></section>
+      </main>
+      <footer>PocketGS</footer>
+    </div>
   </body>
 </html>
